@@ -8,15 +8,32 @@
 </head>
 <body>
   <div class="container">
-    <h1>Water Quest</h1>
-    <p class="game-instructions">Collect 20 items to complete the game!</p>
-    <div class="stats">
-      <p>Cans Collected: <span id="current-cans">0</span></p>
-      <p>Time Left: <span id="timer">30</span>s</p>
-    </div>
-    <div id="achievements" class="achievement"></div>
-    <div class="game-grid"></div>
-    <button id="start-game">Start Game</button>
+    <header class="site-header">
+      <img class="brand-logo" src="img/cw_logo_horizontal.png" alt="charity: water">
+      <span class="header-divider" aria-hidden="true"></span>
+      <p class="game-name">Water Quest</p>
+    </header>
+    <main>
+      <h1>Make every second count.</h1>
+      <p class="game-instructions">Tap 20 water cans before time runs out.</p>
+      <div class="stats">
+        <p>Cans collected <span id="current-cans" aria-live="polite">0</span></p>
+        <p>Time left <span><span id="timer" aria-live="off">30</span>s</span></p>
+      </div>
+      <p id="game-feedback" class="game-feedback" role="status" aria-live="polite" aria-atomic="true">Catch a can to earn a point!</p>
+      <ul class="milestone-list" aria-label="Score milestones">
+        <li data-milestone="5">5 cans</li>
+        <li data-milestone="10">10 cans</li>
+        <li data-milestone="15">15 cans</li>
+        <li data-milestone="20">20 cans</li>
+      </ul>
+      <p id="achievements" class="achievement" role="status" aria-live="polite"></p>
+      <div class="game-grid" aria-label="Water can game grid"></div>
+      <div class="game-controls">
+        <button id="start-game" type="button">Start game</button>
+        <button id="reset-game" class="reset-button" type="button">Reset</button>
+      </div>
+    </main>
   </div>
   <script src="script.js"></script>
 </body>

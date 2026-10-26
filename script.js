@@ -1,54 +1,123 @@
-// Game configuration and state variables
-const GOAL_CANS = 25;        // Total items needed to collect
-let currentCans = 0;         // Current number of items collected
-let gameActive = false;      // Tracks if game is currently running
-let spawnInterval;          // Holds the interval for spawning items
+const GOAL_CANS = 20;
+const GAME_LENGTH = 30;
+const winningMessages = [
+  'Amazing work! You reached the 20-can goal!',
+  'You did it! Every second counted.',
+  'Incredible speed. You reached the goal!'
+];
+const losingMessages = [
+  'So close! Give it another try.',
+  'Every can counts. Try again!',
+  'The goal is within reach. Play again!'
+];
+const milestoneMessages = {
+  5: 'Great start! You collected 5 cans.',
+  10: 'Halfway there! You collected 10 cans.',
+  15: 'Almost there! You collected 15 cans.',
+  20: 'Milestone reached! You collected 20 cans!'
+};
+const catchMessages = [
+  'Nice catch!',
+  'Great job!',
+  'Keep it up!'
+];
 
-// Creates the 3x3 game grid where items will appear
+let currentCans = 0;
+let timeLeft = GAME_LENGTH;
+let gameActive = false;
+let spawnInterval;
+let timerInterval;
+
 function createGrid() {
   const grid = document.querySelector('.game-grid');
-  grid.innerHTML = ''; // Clear any existing grid cells
+  grid.innerHTML = '';
   for (let i = 0; i < 9; i++) {
     const cell = document.createElement('div');
-    cell.className = 'grid-cell'; // Each cell represents a grid square
+    cell.className = 'grid-cell';
     grid.appendChild(cell);
   }
 }
 
-// Ensure the grid is created when the page loads
 createGrid();
 
-// Spawns a new item in a random grid cell
 function spawnWaterCan() {
-  if (!gameActive) return; // Stop if the game is not active
+  if (!gameActive) return;
   const cells = document.querySelectorAll('.grid-cell');
-  
-  // Clear all cells before spawning a new water can
   cells.forEach(cell => (cell.innerHTML = ''));
-
-  // Select a random cell from the grid to place the water can
   const randomCell = cells[Math.floor(Math.random() * cells.length)];
-
-  // Use a template literal to create the wrapper and water-can element
   randomCell.innerHTML = `
     <div class="water-can-wrapper">
-      <div class="water-can"></div>
+      <button class="water-can" type="button" aria-label="Collect water can"></button>
     </div>
   `;
 }
 
-// Initializes and starts a new game
 function startGame() {
-  if (gameActive) return; // Prevent starting a new game if one is already active
+  if (gameActive) return;
+  resetGame();
   gameActive = true;
-  createGrid(); // Set up the game grid
-  spawnInterval = setInterval(spawnWaterCan, 1000); // Spawn water cans every second
+  document.getElementById('game-feedback').textContent = 'Go! Catch as many cans as you can.';
+  document.getElementById('start-game').textContent = 'Playing...';
+  document.getElementById('start-game').disabled = true;
+  spawnWaterCan();
+  spawnInterval = setInterval(spawnWaterCan, 1000);
+  timerInterval = setInterval(() => {
+    timeLeft -= 1;
+    document.getElementById('timer').textContent = timeLeft;
+    if (timeLeft <= 0) endGame();
+  }, 1000);
+}
+
+function resetGame() {
+  gameActive = false;
+  clearInterval(spawnInterval);
+  clearInterval(timerInterval);
+  currentCans = 0;
+  timeLeft = GAME_LENGTH;
+  document.getElementById('current-cans').textContent = currentCans;
+  document.getElementById('timer').textContent = timeLeft;
+  document.getElementById('game-feedback').textContent = 'Catch a can to earn a point!';
+  const result = document.getElementById('achievements');
+  result.textContent = '';
+  result.className = 'achievement';
+  document.getElementById('start-game').textContent = 'Start game';
+  document.getElementById('start-game').disabled = false;
+  document.querySelectorAll('.milestone-list [data-milestone]').forEach(milestone => {
+    milestone.classList.remove('reached');
+  });
+  createGrid();
 }
 
 function endGame() {
-  gameActive = false; // Mark the game as inactive
-  clearInterval(spawnInterval); // Stop spawning water cans
+  gameActive = false;
+  clearInterval(spawnInterval);
+  clearInterval(timerInterval);
+  document.querySelectorAll('.grid-cell').forEach(cell => (cell.innerHTML = ''));
+
+  const didWin = currentCans >= GOAL_CANS;
+  const messages = didWin ? winningMessages : losingMessages;
+  const message = messages[Math.floor(Math.random() * messages.length)];
+  const result = document.getElementById('achievements');
+  result.textContent = message;
+  result.className = `achievement ${didWin ? 'win' : 'loss'}`;
+  document.getElementById('start-game').textContent = 'Play again';
+  document.getElementById('start-game').disabled = false;
 }
 
-// Set up click handler for the start button
+document.querySelector('.game-grid').addEventListener('click', event => {
+  if (!gameActive || !event.target.closest('.water-can')) return;
+  currentCans += 1;
+  document.getElementById('current-cans').textContent = currentCans;
+  const feedback = milestoneMessages[currentCans] ||
+    catchMessages[Math.floor(Math.random() * catchMessages.length)];
+  document.getElementById('game-feedback').textContent = feedback;
+  document.querySelectorAll('.milestone-list [data-milestone]').forEach(milestone => {
+    if (currentCans >= Number(milestone.dataset.milestone)) {
+      milestone.classList.add('reached');
+    }
+  });
+  spawnWaterCan();
+});
+
 document.getElementById('start-game').addEventListener('click', startGame);
+document.getElementById('reset-game').addEventListener('click', resetGame);

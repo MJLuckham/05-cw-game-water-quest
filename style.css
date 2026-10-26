@@ -1,99 +1,171 @@
-/* Charity: water Brand Colors & Fonts
-
-Primary Colors:
-- Yellow:     #FFC907
-- Blue:       #2E9DF7
-
-Secondary Colors:
-- Light Blue: #8BD1CB
-- Green:      #4FCB53
-- Orange:     #FF902A
-- Red:        #F5402C
-- Dark Green: #159A48
-- Pink:       #F16061
-
-Fonts:
-- Proxima Nova
-- Avenir
-
-*/
+:root {
+  color-scheme: light;
+  --yellow: #ffc907;
+  --blue: #2e9df7;
+  --light-blue: #eaf6ff;
+  --ink: #222222;
+  --muted: #5e6670;
+  --green: #159a48;
+  --red: #c43b32;
+}
 
 * {
   box-sizing: border-box;
 }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Avenir Next', Avenir, 'Segoe UI', sans-serif;
   margin: 0;
-  padding: 30px;
-  background-color: #f0f0f0;
-  color: #333;
+  min-height: 100vh;
+  padding: 24px;
+  background-color: #f5fbff;
+  background-image: linear-gradient(135deg, rgba(46, 157, 247, 0.045) 25%, transparent 25%, transparent 50%, rgba(46, 157, 247, 0.045) 50%, rgba(46, 157, 247, 0.045) 75%, transparent 75%, transparent);
+  background-size: 28px 28px;
+  color: var(--ink);
 }
 
 .container {
-  max-width: 750px;
-  margin: 50px auto;
-  background-color: #fff;
-  padding: 40px;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: min(100%, 760px);
+  margin: 16px auto;
+  padding: clamp(22px, 5vw, 48px);
+  border-top: 8px solid var(--yellow);
+  background: #fff;
+  box-shadow: 0 12px 36px rgba(24, 62, 88, 0.1);
+}
+
+.site-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid #e4edf2;
+}
+
+.brand-logo {
+  display: block;
+  width: min(220px, 55vw);
+  height: auto;
+}
+
+.header-divider {
+  width: 1px;
+  height: 34px;
+  background: #d3dce2;
+}
+
+.game-name {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  font-weight: 700;
 }
 
 h1 {
   text-align: center;
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  color: #333;
-}
-
-h1 img {
-  height: 50px;
-  margin-right: 15px;
-  display: block;
+  margin: 36px 0 8px;
+  font-size: clamp(28px, 5vw, 40px);
+  line-height: 1.12;
+  color: var(--ink);
 }
 
 .game-instructions {
-  font-size: 18px;
-  margin-bottom: 30px;
+  margin: 0 0 28px;
   text-align: center;
+  color: var(--muted);
+  font-size: 17px;
 }
 
 .stats {
   display: flex;
-  justify-content: space-around;
-  margin-bottom: 30px;
-  background-color: #f5f5f5;
-  padding: 15px 0;
-  border-radius: 8px;
+  justify-content: center;
+  gap: clamp(28px, 10vw, 96px);
+  margin: 0 auto 26px;
+  padding: 16px;
+  border-block: 1px solid #dce9f0;
 }
 
 .stats p {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
   margin: 0;
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.stats span {
+  color: var(--ink);
+  font-size: 26px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0;
+}
+
+.stats p:last-child > span {
+  color: #146fb8;
+}
+
+.game-feedback {
+  min-height: 24px;
+  margin: 0 0 12px;
+  color: #146fb8;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.milestone-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 18px;
+  padding: 0;
+  list-style: none;
+}
+
+.milestone-list li {
+  padding: 6px 12px;
+  border: 1px solid #cfe8f8;
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 700;
+  transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+}
+
+.milestone-list li.reached {
+  border-color: var(--green);
+  background: #e8f7ed;
+  color: #126b35;
 }
 
 .game-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
+  gap: clamp(8px, 2vw, 14px);
   margin: 0 auto;
-  max-width: 500px;
+  width: min(100%, 450px);
 }
 
 .grid-cell {
-  background-color: #e8e8e8;
-  border-radius: 8px;
   aspect-ratio: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s;
   position: relative;
   overflow: hidden;
+  border: 1px solid #cfe8f8;
+  border-radius: 6px;
+  background: var(--light-blue);
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.grid-cell:has(.water-can) {
+  border-color: var(--blue);
+  background: #d8efff;
 }
 
 .water-can-wrapper {
@@ -101,43 +173,164 @@ h1 img {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 70px;
-  height: 70px;
-  /* Ensure the wrapper is properly centered */
+  width: 68%;
+  height: 68%;
 }
 
 .water-can {
   width: 100%;
   height: 100%;
-  background-image: url('img/water-can.png');
-  background-size: cover;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  background-image: url('img/water-can-transparent.png');
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   cursor: pointer;
-  border-radius: 50%;
   animation: popUp 0.5s cubic-bezier(0.17, 0.67, 0.34, 2);
-  transform-origin: center; /* Ensure scaling happens from the center */
+  transform-origin: center;
+}
+
+.water-can:hover {
+  background-color: transparent;
+  transform: scale(1.08);
+}
+
+.water-can:focus-visible,
+button:focus-visible {
+  outline: 3px solid #146fb8;
+  outline-offset: 3px;
 }
 
 @keyframes popUp {
   0% {
-    transform: scale(0.5); /* Start scaling from the center */
+    transform: scale(0.5);
   }
   100% {
-    transform: scale(1); /* End scaling at full size */
+    transform: scale(1);
   }
 }
 
-
 button {
-  background-color: #4CAF50;
-  color: white;
+  background-color: var(--yellow);
+  color: var(--ink);
   border: none;
-  padding: 12px 24px;
+  min-height: 48px;
+  padding: 12px 32px;
   font-size: 16px;
-  border-radius: 8px;
+  font-weight: 800;
+  border-radius: 4px;
   cursor: pointer;
   display: block;
   margin: 30px auto 0;
-  transition: background-color 0.2s;
+  transition: background-color 160ms ease, transform 160ms ease;
+}
+
+button#start-game:hover:not(:disabled) {
+  background-color: #f0bb00;
+  transform: translateY(-1px);
+}
+
+.game-controls {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.game-controls button {
+  margin: 30px 0 0;
+}
+
+.reset-button {
+  border: 2px solid #146fb8;
+  background-color: #fff;
+  color: #146fb8;
+}
+
+.reset-button:hover {
+  background-color: var(--light-blue);
+  transform: translateY(-1px);
+}
+
+button#start-game:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.achievement {
+  min-height: 28px;
+  margin: 0 0 18px;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.achievement.win {
+  color: var(--green);
+}
+
+.achievement.loss {
+  color: var(--red);
+}
+
+@media (max-width: 520px) {
+  body {
+    padding: 12px;
+  }
+
+  .container {
+    margin: 0 auto;
+    padding: 22px 16px;
+  }
+
+  .site-header {
+    gap: 12px;
+  }
+
+  .brand-logo {
+    width: min(190px, 52vw);
+  }
+
+  .game-name {
+    font-size: 13px;
+  }
+
+  h1 {
+    margin-top: 28px;
+  }
+
+  .game-instructions {
+    font-size: 15px;
+  }
+
+  .stats {
+    justify-content: space-between;
+    gap: 8px;
+    padding-inline: 4px;
+  }
+
+  .stats p {
+    gap: 6px;
+    font-size: 11px;
+  }
+
+  .stats span {
+    font-size: 22px;
+  }
+
+  .game-controls button {
+    padding-inline: 22px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
 }
